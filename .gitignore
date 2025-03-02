@@ -8,6 +8,7 @@ obj/
 out/
 build/
 include/
+esm/
 
 .vs/
 *.suo
