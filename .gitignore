@@ -11,6 +11,7 @@ include/
 esm/
 
 .vs/
+.vscode/
 *.suo
 *.sdf
 *.opensdf
@@ -25,3 +26,8 @@ esm/
 *.ilk
 *.obj
 *.log
+
+lab5/node_modules
+.env
+npm-debug.log
+yarn-error.log

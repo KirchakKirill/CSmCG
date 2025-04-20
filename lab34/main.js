@@ -100,7 +100,7 @@ const vertexShaderSource = `
                     specularLightParam = pow(specularLightDot, shininess);
                 }
                 
-                vLightWeighting = (uLightColor.rbg * (uAmbientPower + diffuseLightDot) + vec3(1.0) * specularLightParam) * attenuation;
+                vLightWeighting = uLightColor.rgb; 
             } else {
                 vVertexPosition = vertexPositionEye4.xyz;
                 vVertexNormal = normal;
@@ -141,8 +141,10 @@ precision mediump float;
 
             vec4 finalTexture = mix(textureNumber, textureMaterial, uMix);
 
+            
             if (!uShadingPhong) {
-                gl_FragColor = mix(finalTexture, vec4(vLightWeighting.rgb, 1.0), 0.5);
+                gl_FragColor = vec4(finalTexture.rgb * vLightWeighting, finalTexture.a);
+                 
             } else {
                 vec3 lightDirection = normalize(uLightPosition - vVertexPosition);
                 
@@ -160,15 +162,16 @@ precision mediump float;
                     specularLightParam = pow(specularLightDot, shininess);
                 }
                 
-                vec3 vColor = (uLightColor.rbg * (uAmbientPower + diffuseLightDot) + vec3(1.0) * specularLightParam) * attenuation;
+                vec3 vColor = uLightColor.rgb;
 
-                gl_FragColor = mix(finalTexture, vec4(vColor.rgb, 1.0), 0.5);
+                gl_FragColor = vec4(finalTexture.rgb * vColor, finalTexture.a);
             }
         }
 `;
 
 function createGLContext(canvas) {
     const gl = canvas.getContext("webgl2");
+    gl.enable( gl.BLEND ); 
     if (!gl) {
         alert("WebGL 2.0 not supported");
     }
